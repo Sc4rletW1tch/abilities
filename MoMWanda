@@ -1,0 +1,257 @@
+local plr = game.Players.LocalPlayer
+
+local button = Instance.new("ImageButton")
+if plr.PlayerGui:FindFirstChild("MoMWanda") then
+	button.Parent = plr.PlayerGui.MoMWanda
+else
+	local screen = Instance.new("ScreenGui",plr.PlayerGui )
+	screen.Name = "MoMWanda"
+	screen.IgnoreGuiInset = true
+	button.Parent = screen
+end
+button.Image = "rbxassetid://12612797195"
+button.BackgroundTransparency = 1
+button.Position = UDim2.new(0.56, 0,0.8, 0)
+button.Size = UDim2.new(0.111, 0,0.21, 0)
+--BOMBS!!!
+button.MouseButton1Up:Connect(function()
+	for i = 1,5 do 
+
+local char = plr.Character
+local trnsseq = NumberSequence.new({
+	NumberSequenceKeypoint.new(0, 1), -- Start fully transparent
+	NumberSequenceKeypoint.new(0.5, 0), -- Become fully opaque
+	NumberSequenceKeypoint.new(1, 1)  -- Become fully transparent at the end
+})
+
+local bolt = Instance.new("Part", workspace)
+bolt.Size = Vector3.new(0.1, 0.1, 0.1)
+bolt.Anchored = false
+local weld = Instance.new("WeldConstraint", bolt)
+weld.Part0 = bolt
+weld.Part1 = char.LeftHand
+bolt.CanCollide = false
+bolt.Position = char.LeftHand.Position
+
+local att = Instance.new("Attachment", bolt)
+
+local particle = Instance.new("ParticleEmitter", att)
+particle.LockedToPart = true
+local colorSequence = ColorSequence.new{
+	ColorSequenceKeypoint.new(0, Color3.new(1, 0.215686, 0.227451)),  -- Start of gradient
+	ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))   -- End of gradient (same color)
+}
+particle.Color = colorSequence
+particle.Speed = NumberRange.new(0, 0.01)
+particle.Lifetime = NumberRange.new(0.2, 0.2)
+particle.LightEmission = 1
+particle.LightInfluence = 0
+particle.Texture = "rbxassetid://75202463"
+particle.Brightness = 10
+
+local att2 = Instance.new("Attachment", bolt)
+att2.Position = att2.Position + Vector3.new(-1, 0 , 0)
+local att3 = Instance.new("Attachment", bolt)
+att3.Position = att3.Position + Vector3.new(1, 0 , 0)
+
+function trail(Texture, a1, A2)
+	local sizeseq = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0.1), -- Start at 10% size
+		NumberSequenceKeypoint.new(0.5, 10), -- Grow to full size at the middle
+		NumberSequenceKeypoint.new(1, 10)  -- Shrink to 20% size at the end
+	})
+	local trail = Instance.new("Trail", bolt)
+	trail.Attachment1 = a1
+	trail.Attachment0 = A2
+	trail.Lifetime = 0.2
+	trail.WidthScale = sizeseq
+	trail.Brightness = 10
+	trail.FaceCamera = true
+	trail.MinLength = 0.01
+	trail.LightEmission = 1
+	trail.Texture = Texture
+	trail.Color = colorSequence
+end
+
+function particlecreate(Texture)
+	local sizeseq = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 1), -- Start at full size
+		NumberSequenceKeypoint.new(1, 30) -- End at zero size
+	})
+	local port = Instance.new("ParticleEmitter", bolt)
+	port.Texture  = Texture
+	port.Color = colorSequence
+	port.Lifetime = NumberRange.new(1, 1)
+	port.Transparency = trnsseq
+	port.Brightness = 100
+	port.LightEmission = 1
+		port.LockedToPart = true
+		port.Size = sizeseq
+	port.Speed = NumberRange.new(0,0)
+	port.Enabled = false
+	port.Name = "exp"
+end
+
+particlecreate("rbxassetid://9707815688")
+particlecreate("rbxassetid://7216854591")
+
+particlecreate("rbxassetid://7216854591")
+particlecreate("rbxassetid://13326070883")
+
+trail("rbxassetid://3517446796", att2, att3)
+trail("rbxassetid://9612491274", att2, att3)
+trail("rbxassetid://12612207015", att2, att3)
+trail("rbxassetid://8308306762", att2, att3)
+trail("rbxassetid://3517446796", att2, att3)
+trail("rbxassetid://7151842823", att2, att3)
+
+wait(1)
+local ts = game.TweenService
+local mouse = plr:GetMouse()
+weld:Destroy()
+bolt.Anchored = true
+ts:Create(bolt, TweenInfo.new(0.3), {Position = mouse.Hit.Position}):Play()
+wait(0.3)
+
+for i, ipa in pairs(bolt:GetDescendants()) do
+	if not ipa:IsA("Attachment") then
+		ipa.Enabled = false
+	end
+end
+for i, ipa in pairs(bolt:GetDescendants()) do
+		if ipa.Name == "exp" then
+			
+			ipa:Emit(6)
+			wait(0.1)
+	end
+	end
+	end
+end)
+--FLIGHT!!!!
+--[[ Made by coolcapidog
+Channel ->> https://www.youtube.com/c/coolcapidog
+You can change the settings but you shouldn't change anything except settings.
+]]
+
+local plr = game.Players.LocalPlayer
+local HoverAnimID = "rbxassetid://619542203"
+local FlyAnimID = "rbxassetid://619543231"
+local WindSoundEnabled = true
+
+
+local button = Instance.new("ImageButton")
+if plr.PlayerGui:FindFirstChild("MoMWanda") then
+	button.Parent = plr.PlayerGui.MoMWanda
+else
+	local screen = Instance.new("ScreenGui",plr.PlayerGui )
+	screen.Name = "MoMWanda"
+	screen.IgnoreGuiInset = true
+	button.Parent = screen
+end
+button.Image = "rbxassetid://12612774469"
+button.BackgroundTransparency = 1
+button.Position = UDim2.new(0.478, 0,0.803, 0)
+button.Size = UDim2.new(0.111, 0,0.21, 0)
+local BodyVelocity = Instance.new("BodyVelocity")
+BodyVelocity.MaxForce = Vector3.new(100000000,100000000,10000000)
+BodyVelocity.P = 20000
+
+local v3 = Instance.new("BodyGyro")
+v3.MaxTorque = Vector3.new(400000, 400000, 400000)
+v3.P = 3000
+v3.D = 500
+local Character = plr.Character
+local Humanoid = Character:FindFirstChild("Humanoid") or Character:WaitForChild("Humanoid")
+BodyVelocity.Parent = Character.HumanoidRootPart
+v3.Parent = Character.HumanoidRootPart
+local Hover = Instance.new("Animation")
+Hover.AnimationId = HoverAnimID
+local Fly = Instance.new("Animation")
+Fly.AnimationId = FlyAnimID
+
+local v10 = Humanoid.Animator:LoadAnimation(Hover)
+local v11 = Humanoid.Animator:LoadAnimation(Fly)
+local Camera = workspace.Camera
+local function u2()
+	if Humanoid.MoveDirection == Vector3.new(0, 0, 0) then
+		return Humanoid.MoveDirection
+	end
+	local v12 = (Camera.CFrame * CFrame.new((CFrame.new(Camera.CFrame.p, Camera.CFrame.p + Vector3.new(Camera.CFrame.lookVector.x, 0, Camera.CFrame.lookVector.z)):VectorToObjectSpace(Humanoid.MoveDirection)))).p - Camera.CFrame.p;
+	if v12 == Vector3.new() then
+		return v12
+	end
+	return v12.unit
+end
+local Flymoving = Instance.new("BoolValue", plr)
+local TweenService = game:GetService("TweenService")
+
+local Flying = false
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	if Character then
+		if Flying == true then
+
+			v3.CFrame = game.Workspace.Camera.CFrame
+			if u2() == Vector3.new(0, 0, 0) then
+
+				Flymoving.Value = false
+			else
+
+				Flymoving.Value = true
+			end
+			TweenService:Create(BodyVelocity, TweenInfo.new(0.3), {Velocity = u2() * 70}):Play()
+		end
+
+	end
+end)
+
+Flymoving.Changed:Connect(function(p1)
+	if p1 == true then
+		TweenService:Create(Camera, TweenInfo.new(0.5), {FieldOfView = 70}):Play()
+		v10:Stop()
+
+		v11:Play()
+		return
+	end
+	if p1 == false then
+		TweenService:Create(Camera, TweenInfo.new(0.5), {FieldOfView = 70}):Play()
+		v11:Stop()
+
+		v10:Play()
+	end
+end)
+
+local xractivated = false
+button.MouseButton1Up:Connect(function()
+
+
+	if Flying == false then
+		Flying = true
+		if Character:FindFirstChild("HumanoidRootPart") then
+			v10:Play(0.1, 1, 1)
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+			Character.HumanoidRootPart.Running.Volume = 0
+			Humanoid:ChangeState(6)
+			BodyVelocity.Parent = Character.HumanoidRootPart
+			v3.Parent = Character.HumanoidRootPart
+		end
+	else
+		Flying = false
+		Flymoving.Value = false
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
+		Character.HumanoidRootPart.Running.Volume = 0.65
+		Humanoid:ChangeState(8)
+		BodyVelocity.Parent = Character
+		v3.Parent = Character
+		v10:Stop()
+		v11:Stop()
+	end
+
+end)
+
